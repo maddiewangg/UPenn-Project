@@ -1,0 +1,67 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-align: center;
+    background-color: purple;
+}
+.wrapper {
+    background-color: black;
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    min-width: 650px;
+}
+#players {
+    display: flex;
+    background-color: purple;
+    color: white;
+    flex-wrap: wrap;
+    padding: 10px;
+    gap: 10px;
+}
+.player {
+    display: flex;
+    flex: 1;
+    align-items: center;
+}
+input {
+    flex: 1;
+    padding: 5px;
+}
+#board {
+    height: 540px;
+    width: 630px;
+    background-color: pink;
+    border: 10px solid salmon;
+    
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: start;
+}
+.circle {
+    height: 60px;
+    width : 60px; 
+    background-color: white;
+    border-radius: 50%;
+    border: 5px solid purple;
+    margin: 10px
+}  
+
+.tile {
+    height: 70px;
+    width: 70px;
+    margin: 5px;
+
+    /* Circle */
+    background-color: white;
+    border-radius: 50%;
+    border: 5px solid navy;
+}
+
+.red-piece {
+    background-color: red;
+}
+
+.yellow-piece {
+    background-color: yellow;
+}
