@@ -70,13 +70,6 @@
 
     <script>
         let circles = document.getElementsByClassName("circle");
-        for(let circle of circles) {
-            circle.addEventListener('click', changeColor, false);
-        }
-
-        function changeColor(){
-            this.style.setProperty("background-color", "red") 
-        } 
 
         class Board {
             constructor(element) {
@@ -94,6 +87,27 @@
             }
             getCell(row, col) {
                 return this.rows[row].cells[col];
+            }
+            addPiece() {
+
+                let col = this.cellObject.index;
+                let board = this.cellObject.row.board;
+                let row = board.rows.length - 1;
+                while(board.getCell(row, col).piece != null && row >=0) {row--;}
+                    
+                if(row < 0) {
+                    return;
+                }
+
+                board.getCell(row, col).element.style.setProperty("background-color", currPlayer);
+                board.getCell(row, col).piece = currPlayer;
+                if (currPlayer == "red") {
+                    currPlayer = "yellow";
+                }
+                else {
+                    currPlayer = "red";
+                }
+                
             }
         }
         
@@ -115,9 +129,10 @@
                 this.cells = [];
                 element.cellObject = this;
                 this.piece = null;
+                element.addEventListener("click", this.row.board.addPiece, false);
             }
         }
-
+        let currPlayer = "red"
         let board = new Board(document.getElementById("board")) 
         board.constructRows();
         let rows = board.rows;
