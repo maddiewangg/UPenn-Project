@@ -85,6 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         return count >= 4;
+
+        
     }
 
     function restartGame() {
