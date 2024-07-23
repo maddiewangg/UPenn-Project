@@ -71,7 +71,7 @@
     <script>
         
         let circles = document.getElementsByClassName("circle");
-
+        let counter = 0
         class Board {
             constructor(element) {
                 this.rows = [];
@@ -89,6 +89,7 @@
             getCell(row, col) {
                 return this.rows[row].cells[col];
             }
+            
             addPiece() {
 
                 let col = this.cellObject.colIndex;
@@ -104,11 +105,11 @@
                 board.getCell(row, col).piece = currPlayer;
                 board.checkForWin(board.getCell(row, col))
                 
-                if (currPlayer == "red") {
-                    currPlayer = "yellow";
+                if (currPlayer == "lightblue") {
+                    currPlayer = "plum";
                 }
                 else {
-                    currPlayer = "red";
+                    currPlayer = "lightblue";
                 }
                 board.checkForWin(this.cellObject);
                 
@@ -120,6 +121,8 @@
                     let color = cell.piece;
                     let startCol = col;
                     let endCol = col;
+                    let startRow = row;
+                    let endRow = row;
                     while(startCol-1 >= 0 && board.getCell(row, startCol - 1).piece == color) {
                         startCol--;
                     }
@@ -128,10 +131,27 @@
                     }
                     if(endCol - startCol >= 3){
                         let youWon = true;
+                        let winnerElement = document.getElementById("winner");
+                        winnerElement.textContent = color.charAt(0).toUpperCase() + color.slice(1) + " player wins!";
+                        counter++
                     }
 
+                    while(startRow-1 >= 0 && board.getCell(startRow - 1, col).piece == color) {
+                        startRow--;
+                    }
+                    while(endRow+1 < board.rows.length && board.getCell(endRow + 1, col).piece == color) {
+                        endRow++;
+                    }
+                    if(endRow - startRow >= 3) {
+                        let youWon = true;
+                        let winnerElement = document.getElementById("winner");
+                        winnerElement.textContent = color.charAt(0).toUpperCase() + color.slice(1) + " player wins!";
+                        counter++;
+                    }
                 }
+
         }
+    
         
         class Row {
             constructor(element, index, board) {
@@ -152,10 +172,12 @@
                 this.cells = [];
                 element.cellObject = this;
                 this.piece = null;
+                
                 element.addEventListener("click", this.row.board.addPiece, false);
+                
             }
         }
-        let currPlayer = "red"
+        let currPlayer = "lightblue"
         let board = new Board(document.getElementById("board")) 
         board.constructRows();
         let rows = board.rows;

@@ -1,12 +1,14 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
+    background-color: lightblue;
+    color: salmon;
 }
 
 #board {
     width: 630px;
-    background-color: blue;
-    border: 10px solid navy;
+    background-color: pink;
+    border: 10px solid salmon;
     
     margin: 0 auto;
     display: flex;
@@ -28,17 +30,19 @@ body {
 }
 
 .red-piece {
-    background-color: red;
+    background-color: green;
 }
 
 .yellow-piece {
-    background-color: yellow;
+    background-color: palevioletred;
 }
 
 .circle {
-    height: 70px;
-    width : 70px; 
+    height: 60px;
+    width : 60px; 
     background-color: white;
     border-radius: 50%;
+    border: 5px, solid rgb(255, 75, 55);
     margin: 10px
+    
 }  
