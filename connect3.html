@@ -115,25 +115,76 @@
                 
             }
             checkForWin(cell) {
-                    let board = cell.row.board
-                    let row = cell.rowIndex;
-                    let col = cell.colIndex;
-                    let color = cell.piece;
-                    //detect horizontal win
-                    let startCol = col;
-                    let endCol = col;
-                    
-                    while(startCol-1 >= 0 && board.getCell(row, startCol - 1).piece == color) {
-                        startCol--;
-                    }
-                    while(endCol+1 < cell.row.cells.length && board.getCell(row, endCol + 1).piece == color) {
-                        endCol++;
-                    }
-                    if(endCol - startCol >= 3){
-                        let youWon = true;
-                    }
-
+                let board = cell.row.board
+                let row = cell.rowIndex;
+                let col = cell.colIndex;
+                let color = cell.piece;
+                //detect horizontal win
+                let startCol = col;
+                let endCol = col;
+                
+                while(startCol-1 >= 0 && board.getCell(row, startCol - 1).piece == color) {
+                    startCol--;
                 }
+                while(endCol+1 < cell.row.cells.length && board.getCell(row, endCol + 1).piece == color) {
+                    endCol++;
+                }
+                if(endCol - startCol >= 3){
+                    let youWon = true;
+                    let winnerElement = document.getElementById("winner");
+                    winnerElement.textContent = color.charAt(0).toUpperCase() + color.slice(1) + " player wins!";
+                }
+                
+                //detect vertical win
+                let startRow = row;
+                let endRow = row;
+                while(startRow-1 >= 0 && board.getCell(startRow - 1, col).piece == color) {
+                    startRow--;
+                }
+                while(endRow+1 < board.rows.length && board.getCell(endRow + 1, col).piece == color) {
+                    endRow++;
+                }
+                if(endRow - startRow >= 3) {
+                    let youWon = true;
+                    let winnerElement = document.getElementById("winner");
+                    winnerElement.textContent = color.charAt(0).toUpperCase() + color.slice(1) + " player wins!";
+                }
+
+                //detect upwards sloping diagonal win
+                startCol = col;
+                endCol = col;
+                startRow = row;
+                endRow = row;
+
+                while(startCol - 1 >= 0 && startRow + 1 < board.rows.length && board.getCell(startRow + 1, startCol - 1).piece == color) {
+                    startRow++;
+                    startCol--;
+                }
+                while(endCol + 1 > cell.row.cells.length && endRow - 1 >= 0 && board.getCell(startRow - 1, startCol + 1).piece == color) {
+                    endRow--;
+                    endCol++;
+                }
+                if(endCol - startCol >= 3) {
+                    let youWon = true;
+                }
+                //detect downward sloping diagonal win
+                startCol = col;
+                endCol = col;
+                startRow = row;
+                endRow = row;
+
+                while(startCol - 1 >= 0 && startRow - 1 >= 0 && board.getCell(startRow - 1, startCol - 1).piece == color) {
+                    startRow--;
+                    startCol--;
+                }
+                while(endCol + 1 < cell.row.cells.length && endRow + 1 < board.rows.length && board.getCell(startRow + 1, startCol + 1).piece == color) {
+                    endRow++;
+                    endCol++;
+                }
+                if(endCol - startCol >= 3) {
+                    let youWon = true;
+                }
+            }
         }
         
         class Row {
