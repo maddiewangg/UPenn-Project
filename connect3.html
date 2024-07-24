@@ -11,6 +11,8 @@
 <body>
     <h1>Connect 4</h1>
     <h2 id="winner"></h2>
+    <button type="button" class="btn btn-outline-danger" onclick="location.reload()">Restart Game</button>
+    <h2 id = player></h2>
     <div id="board">
         <div class="row">
             <div class="circle"></div>
@@ -107,9 +109,11 @@
                 
                 if (currPlayer == "lightblue") {
                     currPlayer = "plum";
+                    document.getElementById("player").textContent = "Purple player turn"
                 }
                 else {
                     currPlayer = "lightblue";
+                    document.getElementById("player").textContent = "Blue player turn"
                 }
                 board.checkForWin(this.cellObject);
                 
@@ -160,14 +164,16 @@
                     startRow++;
                     startCol--;
                 }
-                while(endCol + 1 > cell.row.cells.length && endRow - 1 >= 0 && board.getCell(startRow - 1, startCol + 1).piece == color) {
+                while(endCol + 1 > cell.row.cells.length && endRow - 1 >= 0 && board.getCell(endRow - 1, endCol + 1).piece == color) {
                     endRow--;
                     endCol++;
                 }
                 if(endCol - startCol >= 3) {
                     let youWon = true;
+                    let winnerElement = document.getElementById("winner");
+                    winnerElement.textContent = color.charAt(0).toUpperCase() + color.slice(1) + " player wins!";
                 }
-                //detect downward sloping diagonal win
+                //detect downwards sloping diagonal win
                 startCol = col;
                 endCol = col;
                 startRow = row;
@@ -177,16 +183,16 @@
                     startRow--;
                     startCol--;
                 }
-                while(endCol + 1 < cell.row.cells.length && endRow + 1 < board.rows.length && board.getCell(startRow + 1, startCol + 1).piece == color) {
+                while(endCol + 1 < cell.row.cells.length && endRow + 1 < board.rows.length && board.getCell(endRow + 1, endCol + 1).piece == color) {
                     endRow++;
                     endCol++;
                 }
                 if(endCol - startCol >= 3) {
                     let youWon = true;
+                    let winnerElement = document.getElementById("winner");
+                    winnerElement.textContent = color.charAt(0).toUpperCase() + color.slice(1) + " player wins!";
                 }
-            }
-        }
-        
+            }        
         class Row {
             constructor(element, index, board) {
                 this.element = element;
@@ -223,9 +229,6 @@
                 index++;
             }
         }
-
-        
-
     </script>
     
 </body>
