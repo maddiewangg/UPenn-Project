@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Connect 4</title>
+    <link rel="stylesheet" href="connect3.css">
+
+</head>
+<body>
+    <h1>Connect 4</h1>
+    <h2 id="winner"></h2>
+    <button type="button" class="btn btn-outline-danger" onclick="location.reload()">Restart Game</button>
+    <h2 id = player>Click To Start!</h2>
+    <div id="board">
+        <div class="row">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+        <div class="row">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+        <div class="row">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+        <div class="row">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+        <div class="row">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+        <div class="row">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+    </div>
+
+    <script>
+        
+        let circles = document.getElementsByClassName("circle");
+
+        class Board {
+            constructor(element) {
+                this.rows = [];
+                this.element = element
+                element.boardObject = this;
+            }
+            constructRows() {
+                let divs = this.element.getElementsByClassName("row");
+                let index = 0;
+                for (let div of divs) {
+                    this.rows.push(new Row(div, index, this));
+                    index++;
+                }
+            }
+            getCell(row, col) {
+                return this.rows[row].cells[col];
+            }
+            addPiece() {
+
+                let col = this.cellObject.colIndex;
+                let board = this.cellObject.row.board;
+                let row = board.rows.length - 1;
+                while(board.getCell(row, col).piece != null && row >=0) {row--;}
+                    
+                if(row < 0) {
+                    return;
+                }
+
+                board.getCell(row, col).element.style.setProperty("background-color", currPlayer);
+                board.getCell(row, col).piece = currPlayer;
+                board.checkForWin(board.getCell(row, col))
+                
+                if (currPlayer == "red") {
+                    currPlayer = "yellow";
+                    document.getElementById("player").textContent = "Yellow player turn"
+                    player.style.color = "#FFD700"
+                }
+                else {
+                    currPlayer = "red";
+                     document.getElementById("player").textContent = "Red player turn"
+                     player.style.color = "red"
+                }
+                let winner = board.checkForWin(this.cellObject);
+                if(winner) {
+                    board.endGame(winner);
+                }
+                
+            }
+            checkForWin(cell) {
+                    let board = cell.row.board
+                    let row = cell.rowIndex;
+                    let col = cell.colIndex;
+                    let color = cell.piece;
+                    //detect horizontal win
+                    let startCol = col;
+                    let endCol = col;
+                    
+                    while(startCol-1 >= 0 && board.getCell(row, startCol - 1).piece == color) {
+                        startCol--;
+                    }
+                    while(endCol+1 < cell.row.cells.length && board.getCell(row, endCol + 1).piece == color) {
+                        endCol++;
+                    }
+                    if(endCol - startCol >= 3){
+                        player.style.color = "white"
+                        return color;
+                    }
+                    
+                    //detect vertical win
+                    let startRow = row;
+                    let endRow = row;
+                    while(startRow-1 >= 0 && board.getCell(startRow - 1, col).piece == color) {
+                        startRow--;
+                    }
+                    while(endRow+1 < board.rows.length && board.getCell(endRow + 1, col).piece == color) {
+                        endRow++;
+                    }
+                    if(endRow - startRow >= 3) {
+                        player.style.color = "hidden"
+                        return color;
+                        
+                    }
+
+                    //detect upwards sloping diagonal win
+                    startCol = col;
+                    endCol = col;
+                    startRow = row;
+                    endRow = row;
+
+                    while(startCol - 1 >= 0 && startRow + 1 < board.rows.length && board.getCell(startRow + 1, startCol - 1).piece == color) {
+                        startRow++;
+                        startCol--;
+                    }
+                    while(endCol + 1 > cell.row.cells.length && endRow - 1 >= 0 && board.getCell(startRow - 1, startCol + 1).piece == color) {
+                        endRow--;
+                        endCol++;
+                    }
+                    if(endCol - startCol >= 3) {
+                        player.style.color = "white"
+                        return color;
+                        
+                    }
+                    //detect downwards sloping diagonal win
+                    startCol = col;
+                endCol = col;
+                startRow = row;
+                endRow = row;
+
+                while(startCol - 1 >= 0 && startRow - 1 >= 0 && board.getCell(startRow - 1, startCol - 1).piece == color) {
+                    startRow--;
+                    startCol--;
+                }
+                while(endCol + 1 < cell.row.cells.length && endRow + 1 < board.rows.length && board.getCell(endRow + 1, endCol + 1).piece == color) {
+                    endRow++;
+                    endCol++;
+                }
+                if(endCol - startCol >= 3) {
+                    let youWon = true;
+                    let winnerElement = document.getElementById("winner");
+                    winnerElement.textContent = color.charAt(0).toUpperCase() + color.slice(1) + " player wins!";
+                }
+                    return false;
+                }
+                endGame(color) {
+                    for(let row of this.rows) {
+                        for(let cell of row.cells) {
+                            cell.element.removeEventListener('click', board.addPiece, false);
+                        }
+                    }
+                    document.getElementById("winner").textContent = color + " won" 
+                }
+            }
+
+        
+        class Row {
+            constructor(element, index, board) {
+                this.element = element;
+                this.index = index;
+                this.board = board
+                this.cells = [];
+                element.rowObject = this;
+            } 
+        }
+
+        class Cell {
+            constructor(element, row, index) {
+                this.element = element;
+                this.row = row;
+                this.rowIndex = row.index;
+                this.colIndex = index;
+                this.cells = [];
+                element.cellObject = this;
+                this.piece = null;
+                element.addEventListener('click', this.row.board.addPiece, false);
+            }
+        }
+        let currPlayer = "red"
+        let board = new Board(document.getElementById("board")) 
+        board.constructRows();
+        let rows = board.rows;
+        for(let row of rows) {
+            let divs = row.element.getElementsByClassName("circle");
+            let index = 0
+            for (let div of divs) {
+                row.cells.push(new Cell(div, row, index));
+                index++;
+            }
+        }
+
+        
+
+    </script>
+    
+</body>
+</html>
