@@ -30,11 +30,11 @@ body {
 }
 
 .red-piece {
-    background-color: red;
+    background-color: green;
 }
 
 .yellow-piece {
-    background-color: yellow;
+    background-color: palevioletred;
 }
 
 .circle {
