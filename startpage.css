@@ -1,0 +1,19 @@
+body {
+    background-image: url(Connect4.png);
+    background-repeat: no-repeat;
+    background-size: 100vw;
+    background-position-x: center;
+    
+}
+
+div {
+    position: absolute;
+    left: 24%;
+    top: 5%;
+    height: 5%;
+    width: 10%;
+}
+
+#startButton {
+    width: 100%;
+}
