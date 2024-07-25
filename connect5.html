@@ -11,8 +11,8 @@
 <body>
     <h1>Connect 4</h1>
     <h2 id="winner"></h2>
-    <button type="button" class="btn btn-outline-danger" onclick="location.reload()">Restart Game</button>
-    <h2 id = player>Click To Start!</h2>
+    <button class = "button" onclick = "location.reload()">Restart Game</button>
+    <h2 id = "player"></h2>
     <div id="board">
         <div class="row">
             <div class="circle"></div>
@@ -73,7 +73,7 @@
     <script>
         
         let circles = document.getElementsByClassName("circle");
-
+        let counter = 0
         class Board {
             constructor(element) {
                 this.rows = [];
@@ -91,6 +91,7 @@
             getCell(row, col) {
                 return this.rows[row].cells[col];
             }
+            
             addPiece() {
 
                 let col = this.cellObject.colIndex;
@@ -106,78 +107,77 @@
                 board.getCell(row, col).piece = currPlayer;
                 board.checkForWin(board.getCell(row, col))
                 
-                if (currPlayer == "red") {
-                    currPlayer = "yellow";
-                    document.getElementById("player").textContent = "Yellow player turn"
-                    player.style.color = "#FFD700"
+                if (currPlayer == "lightblue") {
+                    currPlayer = "plum";
+                    document.getElementById("player").textContent = "Purple player turn"
                 }
                 else {
-                    currPlayer = "red";
-                     document.getElementById("player").textContent = "Red player turn"
-                     player.style.color = "red"
+                    currPlayer = "lightblue";
+                    document.getElementById("player").textContent = "Blue Player Turn"
                 }
-                let winner = board.checkForWin(this.cellObject);
-                if(winner) {
-                    board.endGame(winner);
-                }
+                board.checkForWin(this.cellObject);
                 
             }
             checkForWin(cell) {
-                    let board = cell.row.board
-                    let row = cell.rowIndex;
-                    let col = cell.colIndex;
-                    let color = cell.piece;
-                    //detect horizontal win
-                    let startCol = col;
-                    let endCol = col;
+                let board = cell.row.board
+                let row = cell.rowIndex;
+                let col = cell.colIndex;
+                let color = cell.piece;
+                //detect horizontal win
+                let startCol = col;
+                let endCol = col;
+                
+                while(startCol-1 >= 0 && board.getCell(row, startCol - 1).piece == color) {
+                    startCol--;
+                }
+                while(endCol+1 < cell.row.cells.length && board.getCell(row, endCol + 1).piece == color) {
+                    endCol++;
+                }
+                if(endCol - startCol >= 3){
+                    let youWon = true;
+                    let winnerElement = document.getElementById("winner");
+                    winnerElement.textContent = color.charAt(0).toUpperCase() + color.slice(1) + " player wins!";
                     
-                    while(startCol-1 >= 0 && board.getCell(row, startCol - 1).piece == color) {
-                        startCol--;
-                    }
-                    while(endCol+1 < cell.row.cells.length && board.getCell(row, endCol + 1).piece == color) {
-                        endCol++;
-                    }
-                    if(endCol - startCol >= 3){
-                        player.style.color = "white"
-                        return color;
-                    }
+                }
+                
+                //detect vertical win
+                let startRow = row;
+                let endRow = row;
+                while(startRow-1 >= 0 && board.getCell(startRow - 1, col).piece == color) {
+                    startRow--;
+                }
+                while(endRow+1 < board.rows.length && board.getCell(endRow + 1, col).piece == color) {
+                    endRow++;
+                }
+                if(endRow - startRow >= 3) {
+                    let youWon = true;
+                    let winnerElement = document.getElementById("winner");
+                    winnerElement.textContent = color.charAt(0).toUpperCase() + color.slice(1) + " player wins!";
                     
-                    //detect vertical win
-                    let startRow = row;
-                    let endRow = row;
-                    while(startRow-1 >= 0 && board.getCell(startRow - 1, col).piece == color) {
-                        startRow--;
-                    }
-                    while(endRow+1 < board.rows.length && board.getCell(endRow + 1, col).piece == color) {
-                        endRow++;
-                    }
-                    if(endRow - startRow >= 3) {
-                        player.style.color = "hidden"
-                        return color;
-                        
-                    }
+                }
 
-                    //detect upwards sloping diagonal win
-                    startCol = col;
-                    endCol = col;
-                    startRow = row;
-                    endRow = row;
+                //detect upwards sloping diagonal win
+                startCol = col;
+                endCol = col;
+                startRow = row;
+                endRow = row;
 
-                    while(startCol - 1 >= 0 && startRow + 1 < board.rows.length && board.getCell(startRow + 1, startCol - 1).piece == color) {
-                        startRow++;
-                        startCol--;
-                    }
-                    while(endCol + 1 > cell.row.cells.length && endRow - 1 >= 0 && board.getCell(startRow - 1, startCol + 1).piece == color) {
-                        endRow--;
-                        endCol++;
-                    }
-                    if(endCol - startCol >= 3) {
-                        player.style.color = "white"
-                        return color;
-                        
-                    }
-                    //detect downwards sloping diagonal win
-                    startCol = col;
+                while(startCol - 1 >= 0 && startRow + 1 < board.rows.length && board.getCell(startRow + 1, startCol - 1).piece == color) {
+                    startRow++;
+                    startCol--;
+                }
+                while(endCol + 1 > cell.row.cells.length && endRow - 1 >= 0 && board.getCell(startRow - 1, startCol + 1).piece == color) {
+                    endRow--;
+                    endCol++;
+                }
+                if(endCol - startCol >= 3) {
+                    let youWon = true;
+                    let winnerElement = document.getElementById("winner");
+                    winnerElement.textContent = color.charAt(0).toUpperCase() + color.slice(1) + " player wins!";
+                    
+                }
+                //detect downward sloping diagonal win
+                startCol = col;
                 endCol = col;
                 startRow = row;
                 endRow = row;
@@ -195,18 +195,8 @@
                     let winnerElement = document.getElementById("winner");
                     winnerElement.textContent = color.charAt(0).toUpperCase() + color.slice(1) + " player wins!";
                 }
-                    return false;
-                }
-                endGame(color) {
-                    for(let row of this.rows) {
-                        for(let cell of row.cells) {
-                            cell.element.removeEventListener('click', board.addPiece, false);
-                        }
-                    }
-                    document.getElementById("winner").textContent = color + " won" 
-                }
             }
-
+        }
         
         class Row {
             constructor(element, index, board) {
@@ -228,10 +218,11 @@
                 element.cellObject = this;
                 this.piece = null;
                 
-                element.addEventListener('click', this.row.board.addPiece, false);
+                element.addEventListener("click", this.row.board.addPiece, false);
+                
             }
         }
-        let currPlayer = "red"
+        let currPlayer = "lightblue"
         let board = new Board(document.getElementById("board")) 
         board.constructRows();
         let rows = board.rows;
